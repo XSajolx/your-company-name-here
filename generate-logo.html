@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head><title>CEx Insights Logo Generator</title></head>
+<body style="background:#1e293b;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:20px;">
+<canvas id="c" width="512" height="512"></canvas>
+<a id="dl" download="cex-insights-logo.png" style="color:#fff;font-size:18px;background:#6366F1;padding:12px 24px;border-radius:8px;text-decoration:none;font-family:sans-serif;">Download PNG</a>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+const W = 512, H = 512;
+
+// Background gradient (rounded rect)
+const grad = ctx.createLinearGradient(0, 0, W, H);
+grad.addColorStop(0, '#4F46E5');
+grad.addColorStop(0.5, '#6366F1');
+grad.addColorStop(1, '#8B5CF6');
+
+// Rounded rect
+const r = 64;
+ctx.beginPath();
+ctx.moveTo(r, 0);
+ctx.lineTo(W - r, 0);
+ctx.quadraticCurveTo(W, 0, W, r);
+ctx.lineTo(W, H - r);
+ctx.quadraticCurveTo(W, H, W - r, H);
+ctx.lineTo(r, H);
+ctx.quadraticCurveTo(0, H, 0, H - r);
+ctx.lineTo(0, r);
+ctx.quadraticCurveTo(0, 0, r, 0);
+ctx.closePath();
+ctx.fillStyle = grad;
+ctx.fill();
+
+// Subtle inner glow
+const glow = ctx.createRadialGradient(W/2, H/3, 50, W/2, H/2, 300);
+glow.addColorStop(0, 'rgba(255,255,255,0.12)');
+glow.addColorStop(1, 'rgba(255,255,255,0)');
+ctx.fillStyle = glow;
+ctx.fill();
+
+// Hexagon
+function drawHexagon(cx, cy, size) {
+  ctx.beginPath();
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 3) * i - Math.PI / 2;
+    const x = cx + size * Math.cos(angle);
+    const y = cy + size * Math.sin(angle);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+// Outer hexagon
+const hx = W/2, hy = 195, hs = 110;
+drawHexagon(hx, hy, hs);
+ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+ctx.lineWidth = 6;
+ctx.stroke();
+
+// Inner lines (like the sidebar icon)
+// Bottom center to middle
+ctx.beginPath();
+ctx.moveTo(hx, hy + hs);
+ctx.lineTo(hx, hy + hs * 0.35);
+ctx.stroke();
+
+// Left-bottom to center to right-bottom
+ctx.beginPath();
+const lx = hx - hs * Math.cos(Math.PI/6);
+const ly = hy + hs * Math.sin(Math.PI/6);
+const rx = hx + hs * Math.cos(Math.PI/6);
+const ry = ly;
+ctx.moveTo(lx, ly - hs * 0.65);
+ctx.lineTo(hx, hy + hs * 0.35);
+ctx.lineTo(rx, ry - hs * 0.65);
+ctx.stroke();
+
+// Top to center
+ctx.beginPath();
+ctx.moveTo(hx, hy - hs);
+ctx.lineTo(hx, hy - hs * 0.35);
+ctx.stroke();
+
+// Bar chart inside hexagon (analytics feel)
+const barY = hy + 10;
+const barW = 14;
+const barGap = 22;
+const bars = [45, 70, 55, 85, 60];
+ctx.fillStyle = 'rgba(255,255,255,0.5)';
+bars.forEach((h, i) => {
+  const bx = hx - (bars.length/2 - 0.5) * barGap + i * barGap - barW/2;
+  ctx.fillRect(bx, barY - h*0.5, barW, h*0.5);
+});
+
+// "CEx" text
+ctx.fillStyle = '#FFFFFF';
+ctx.font = 'bold 120px "Segoe UI", Arial, Helvetica, sans-serif';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+ctx.fillText('CEx', W/2, 385);
+
+// "INSIGHTS" subtitle
+ctx.font = '600 42px "Segoe UI", Arial, Helvetica, sans-serif';
+ctx.fillStyle = 'rgba(255,255,255,0.7)';
+ctx.letterSpacing = '8px';
+ctx.fillText('INSIGHTS', W/2, 445);
+
+// Download link
+document.getElementById('dl').href = c.toDataURL('image/png');
+</script>
+</body>
+</html>
