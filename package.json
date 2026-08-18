@@ -1,9 +1,9 @@
 {
-  "name": "nexus-analytics",
+  "name": "your-company-name-here",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://xsajolx.github.io/nexus-analytics/",
+  "homepage": "https://xsajolx.github.io/your-company-name-here/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

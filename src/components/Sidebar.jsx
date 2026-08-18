@@ -187,7 +187,7 @@ const Sidebar = ({ activeTab, onTabChange, isCollapsed, onToggle, onSignOut, use
                     <div className="brand-logo">
                         <img src={`${import.meta.env.BASE_URL}logo-4s.svg`} alt="4S" style={{ width: 26, height: 26, objectFit: 'contain' }} />
                     </div>
-                    <span className="brand-title">Anthropic</span>
+                    <span className="brand-title">Your company name here</span>
                 </div>
                 <button className="collapse-btn" onClick={onToggle}>
                     <Icons.ChevronLeft />
